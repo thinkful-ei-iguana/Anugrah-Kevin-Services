@@ -1,3 +1,4 @@
+/* eslint-disable indent */
 const ShoppingListService = require('../src/shopping-list-service');
 const knex = require('knex');
 
@@ -51,14 +52,55 @@ describe('Shopping list service object', function() {
     });
 
     it('insertItem() returns a new item and resolves the new item with id', () => {
+      const secondTestItem = {
+        name: 'insert test',
+        price: 99.99,
+        date_added: new Date('2020-01-01T00:00:00.000Z'),
+        checked: false,
+        category: 'Lunch'
+      }
+
+      return ShoppingListService.insertItem(db, secondTestItem)
+              .then(result => {
+                expect(result).to.eql({
+                  id: 1,
+                  name: secondTestItem.name,
+                  price: secondTestItem.price,
+                  date_added: secondTestItem.date_added,
+                  checked: secondTestItem.checked,
+                  category: secondTestItem.category
+                });
+              });
 
     });
 
     it('updateItem() updates an item from the \'shopping_list\' table', () => {
+      const secondID = 2;
+      const testFields = {
+        price: 0.50,
+        date_added: new Date(),
+        checked: true,
+        category: 'Main'
+      }
 
+      return ShoppingListService.updateItem(db, secondID, testFields) 
+          .then(() => ShoppingListService.getById(db, secondID))
+          .then(result => {
+            expect(result).to.eql({
+              id: secondID,
+              ...testFields,
+            })
+          })
     });
 
     it('deleteItem() removes an item by id from the \'shopping_list\' table', () => {
+      const secondID = 2
+      return ShoppingListService.deleteItem(db, secondID)
+          .then(() => ShoppingListService.getAll(db))
+          .then(results => {
+            const expected = testItems.filter(item => item.id !== secondId);
+            expect(results).to.eql(expected)
+          });
 
     });
   });

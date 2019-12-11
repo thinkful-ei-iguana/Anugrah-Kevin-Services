@@ -1,4 +1,7 @@
 const ShoppingListService = {
+  getAll(knex) {
+    return knex.from('shopping_list').select('*');
+  },
   getById(knex, id) {
     return knex.from('shopping_list').select('*').where('id', id).first();
   },
