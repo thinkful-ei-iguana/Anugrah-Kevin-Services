@@ -3,6 +3,7 @@ module.exports = {
         "browser": true,
         "es6": true,
         "jquery": true,
+        "node": true,
     },
     "extends": "eslint:recommended",
     "rules": {
@@ -26,7 +27,8 @@ module.exports = {
         ]
     },
     "parserOptions": {
-        "sourceType": "module"
+        "sourceType": "module",
+        "ecmaVersion": 9
       },
     "globals": {
     "supertest": true,
